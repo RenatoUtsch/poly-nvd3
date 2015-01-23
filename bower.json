@@ -1,0 +1,34 @@
+{
+  "name": "polynvd3",
+  "version": "0.1.0",
+  "authors": [
+    "RenatoUtsch <renatoutsch@gmail.com>"
+  ],
+  "description": "Polymer wrapper for the nvd3 library",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "d3",
+    "nvd3"
+  ],
+  "main": "polynvd3.html",
+  "license": "BSD",
+  "homepage": "https://github.com/RenatoUtsch/polynvd3/",
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.2",
+    "nvd3-community": "~1.7.0",
+    "core-ajax": "Polymer/core-ajax#~0.5.2",
+    "d3": "~3.5.3"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.5"
+  },
+  "resolutions": {
+    "d3": "~3.5.3"
+  }
+}

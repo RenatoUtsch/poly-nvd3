@@ -1,0 +1,170 @@
+<!--
+    @license
+    Copyright (c) 2015 Renato Utsch. All rights reserved.
+    This code may only be used under the BSD style license found at http://renatoutsch.github.io/LICENSE.txt
+-->
+<link rel="import" href="../nvd3-abstract-chart/nvd3-abstract-chart.html">
+
+<!--
+This element is a polymer wrapper for the NVD3 discrete bar chart.
+
+@element nvd3-discrete-bar-chart
+@blurb Polymer wrapper for the NVD3 discrete bar chart.
+@status alpha
+@ehomepage http://renatoutsch.github.io/polynvd3/nvd3-discrete-bar-chart
+-->
+<polymer-element name="nvd3-discrete-bar-chart" extends="nvd3-abstract-chart">
+    <script>
+        Polymer({
+            publish: {
+                /**
+                 * Function that returns the x value of the chart.
+                 *
+                 * @attribute x
+                 * @type Object
+                 */
+                x: function(d) { return d.label; },
+
+                /**
+                 * Function that returns the y value of the chart.
+                 *
+                 * @attribute y
+                 * @type Object
+                 */
+                y: function(d) { return d.value; },
+
+                /**
+                 * The colors selected for the elements of the chart.
+                 *
+                 * @attribute color
+                 * @type Object
+                 */
+                color: nv.utils.defaultColor(),
+
+                /**
+                 * If is to show the x axis.
+                 *
+                 * @attribute showXAxis
+                 * @type bool
+                 * @default true
+                 */
+                showXAxis: true,
+
+                /**
+                 * If is to show the y axis.
+                 *
+                 * @attribute showYAxis
+                 * @type bool
+                 * @default true
+                 */
+                showYAxis: true,
+
+                /**
+                 * If is to show tooltips where the mouse is.
+                 *
+                 * @attribute tooltips
+                 * @type bool
+                 * @default true
+                 */
+                tooltips: true,
+
+                /**
+                 * The HTML content of the tooltips.
+                 * The default is null because then the tooltip will be the
+                 * NVD3's default.
+                 *
+                 * @attribute tooltipContent
+                 * @type string
+                 * @default null
+                 */
+                tooltipContent: null,
+
+                /**
+                 * The label of the x axis.
+                 *
+                 * @attribute xAxisAxisLabel
+                 * @type string
+                 * @default ''
+                 */
+                xAxisAxisLabel: '',
+
+                /**
+                 * Angle (in degrees) to rotate the x axis labels.
+                 *
+                 * @attribute xAxisRotateLabels
+                 * @type number
+                 * @default 0
+                 */
+                xAxisRotateLabels: 0,
+
+                /**
+                 * Tick format of the x axis.
+                 *
+                 * @attribute xAxisTickFormat
+                 * @type Object
+                 */
+                xAxisTickFormat: function(d) { return d; },
+
+                /**
+                 * The label of the y axis.
+                 *
+                 * @attribute yAxisAxisLabel
+                 * @type string
+                 * @default ''
+                 */
+                yAxisAxisLabel: '',
+
+                /**
+                 * Angle (in degrees) by which the y axis labels will be rotated.
+                 *
+                 * @attribute yAxisRotateLabels
+                 * @type number
+                 * @default 0
+                 */
+                yAxisRotateLabels: 0,
+
+                /**
+                 * Tick format of the y axis.
+                 *
+                 * @attribute yAxisTickFormat
+                 * @type Object
+                 */
+                yAxisTickFormat: function(d) { return d3.format('.2f')(d); }
+
+            },
+
+            nvModel: nv.models.discreteBarChart,
+
+            /**
+             * See the documentation for this function in the
+             * nvd3-abstract-chart element.
+             *
+             * @method configureChart
+             */
+            configureChart: function() {
+                this.super();
+
+                this.chart
+                    .color(this.color)
+                    .x(this.x)
+                    .y(this.y)
+                    .showXAxis(this.showXAxis)
+                    .showYAxis(this.showYAxis)
+                    .tooltips(this.tooltips);
+
+                if(this.tooltipContent)
+                    this.chart.tooltipContent(this.tooltipContent);
+
+                this.chart.xAxis
+                    .axisLabel(this.xAxisAxisLabel)
+                    .rotateLabels(this.xAxisRotateLabels)
+                    .tickFormat(this.xAxisTickFormat);
+
+                this.chart.yAxis
+                    .axisLabel(this.yAxisAxisLabel)
+                    .rotateLabels(this.yAxisRotateLabels)
+                    .tickFormat(this.yAxisTickFormat);
+            }
+        });
+    </script>
+</polymer-element>

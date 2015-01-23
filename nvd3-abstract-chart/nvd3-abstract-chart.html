@@ -1,0 +1,253 @@
+<!--
+    @license
+    Copyright (c) 2015 Renato Utsch. All rights reserved.
+    This code may only be used under the BSD style license found at http://renatoutsch.github.io/LICENSE.txt
+-->
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../core-ajax/core-ajax.html">
+<script src="../../d3/d3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../nvd3-community/build/nv.d3.min.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="../../../nvd3/build/nv.d3.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="util/nvd3-shadow-dom-fix.js" type="text/javascript" charset="utf-8"></script>
+
+<!--
+This element is the abstract element that all polymer-wrapped nvd3 charts
+extend and are based upon.
+
+Instantiating this element will do nothing, it only has boilerplate code for
+all the other elements from polynvd3.
+
+@element nvd3-abstract-chart
+@blurb Boilerplate code for all polymer-wrapped nvd3 charts from polynvd3.
+@status alpha
+@homepage http://renatoutsch.github.io/polynvd3/nvd3-abstract-chart
+-->
+<polymer-element name="nvd3-abstract-chart">
+    <template>
+        <link rel="stylesheet" href="../../nvd3-community/build/nv.d3.css" type="text/css">
+        <!--<link rel="stylesheet" href="../../../nvd3/build/nv.d3.css" type="text/css">-->
+
+        <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
+
+        <div style="width: {{width}}; height: {{height}}">
+            <svg id="svg" overflow="visible" width="{{width}}"
+                height="{{height}}"></svg>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            publish: {
+                /**
+                 * The `data` attribute sets the chart's data.
+                 * Ignored when the `url` attribute is used.
+                 *
+                 * @attribute data
+                 * @type Object (JSON)
+                 * @default []
+                 */
+                data: null,
+
+                /**
+                 * The `url` attribute specifies an url to get the JSON data
+                 * that is used in the nvd3 chart.
+                 * You can use the `params` attribute to specify the parameters
+                 * in the GET request, in the same way the `core-ajax` element
+                 * works.
+                 *
+                 * When this attribute is present, the `data` attribute is
+                 * ignored.
+                 *
+                 * @attribute url
+                 * @type string
+                 * @default ''
+                 */
+                url: '',
+
+                /**
+                 * The `params` attribute specifies the parameters to the
+                 * url specified in the `url` attribute, as JSON.`
+                 *
+                 * This attribute is ignored unless the `url` attribute is
+                 * set.
+                 *
+                 * @attribute params
+                 * @type string (JSON)
+                 * @default ''
+                 */
+                params: '',
+
+                /**
+                 * The width of the chart, in px.
+                 *
+                 * @attribute width
+                 * @type number
+                 * @default 1000
+                 */
+                width: 1000,
+
+                /**
+                 * The height of the chart, in px.
+                 *
+                 * @attribute height
+                 * @type number
+                 * @default 500
+                 */
+                height: 500,
+
+                /**
+                 * The margin of the chart, in px.
+                 * You specify the top, the bottom, the left and the right
+                 * margins in an object, in the same way as CSS.
+                 *
+                 * @attribute margin
+                 * @type Object
+                 */
+                margin: null,
+
+                /**
+                 * The noData string displayed when no data is available.
+                 *
+                 * @attribute noData
+                 * @type string
+                 * @default 'No Data Available.'
+                 */
+                noData: 'No Data Available.',
+
+                /**
+                 * Add a CSS class to make the tooltips rounded and shadowed.
+                 *
+                 * @attribute with3dShadow
+                 * @type bool
+                 * @default false
+                 */
+                with3dShadow: false,
+
+                /**
+                 * Add a CSS class to make the creation transitions enabled.
+                 *
+                 * @attribute withTransitions
+                 * @type bool
+                 * @default false
+                 */
+                withTransitions: false
+
+            },
+
+            /**
+             * This property stores the nvd3 model used in this chart.
+             * When extending this abstract chart to implement the nvd3 charts,
+             * set this property to the nv.model.*Chart function, but without
+             * the ().
+             *
+             * @property nvModel
+             * @type Object
+             * @default null
+             */
+            nvModel: null,
+
+            /**
+             * This function configures the chart. It is called after the chart
+             * is created, but before it is diplayed.
+             *
+             * You can override this function to make your own configurations,
+             * having the utmost control with the charts.
+             * You can use the NVD3 API directly here to configure your chart.
+             *
+             * If you call `this.super();` before any of your code, the
+             * configuration made by the attributes of the polymer element
+             * will also be applied.
+             *
+             * If you do not call `this.super();`, all the attributes
+             * configurations will be ignored, giving you complete control over
+             * how the chart gets displayed.
+             *
+             * @method configureChart
+             */
+            configureChart: function() {
+                // Set up the div css classes first.
+                var div = this.shadowRoot.querySelector('div');
+                if(this.with3dShadow)
+                    div.className += ' with-3d-shadow';
+                if(this.withTransitions)
+                    div.className += ' with-transitions';
+
+                this.chart
+                    .width(this.width)
+                    .height(this.height)
+                    .margin(this.margin)
+                    .noData(this.noData);
+            },
+
+            created: function() {
+                // Private variables. Do not access them from outside this
+                // element!
+                this.chart = null;
+                this.svg = null;
+                this.data = this.data || [];
+                this.margin = this.margin || { top: 30, right: 30, bottom: 50, left: 60 };
+            },
+
+            ready: function() {
+                this.svg = d3.select(this.$.svg);
+                this.manageDataFromUrl();
+                this.createChart();
+            },
+
+            /*
+             * This function properly creates the chart.
+             */
+            createChart: function() {
+                var self = this;
+
+                nv.addGraph(function() {
+                    self.chart = self.nvModel();
+                    self.configureChart();
+
+                    self.updateData();
+                    return self.chart;
+                });
+            },
+
+            /*
+             * This function updates the data and makes the chart update
+             * accordingly.
+             */
+            updateData: function() {
+                if(this.svg && this.chart) {
+                    this.svg.datum(this.data)
+                        .call(this.chart);
+
+                    nv.utils.windowResize(this.chart.update);
+                }
+            },
+
+            /*
+             * This function gets the chart data from the given `url` if an
+             * url was specified and then updates the `data` variable
+             * accordingly.
+             */
+            manageDataFromUrl: function() {
+                var self = this;
+
+                if(this.url) {
+                    // Get the data from the url and set it as the current data.
+                    var ajax = this.shadowRoot.querySelector('core-ajax');
+                    ajax.addEventListener('core-response', function(e) {
+                        self.url = ''; // Clean up the request.
+                        self.data = e.detail.response;
+                    });
+                    ajax.go();
+                }
+            },
+
+            dataChanged: function(oldValue, newValue) {
+                // Just update the data.
+                this.updateData();
+            },
+
+            urlChanged: function(oldValue, newValue) {
+                this.manageDataFromUrl();
+            }
+        });
+    </script>
+</polymer-element>

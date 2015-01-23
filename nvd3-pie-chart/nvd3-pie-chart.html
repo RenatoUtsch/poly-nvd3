@@ -1,0 +1,107 @@
+<!--
+    @license
+    Copyright (c) 2015 Renato Utsch. All rights reserved.
+    This code may only be used under the BSD style license found at http://renatoutsch.github.io/LICENSE.txt
+-->
+<link rel="import" href="../nvd3-abstract-chart/nvd3-abstract-chart.html">
+
+<!--
+This element is a polymer wrapper for the NVD3 pie chart.
+
+@element nvd3-pie-chart
+@blurb Polymer wrapper for the NVD3 pie chart.
+@status alpha
+@ehomepage http://renatoutsch.github.io/polynvd3/nvd3-pie-chart
+-->
+<polymer-element name="nvd3-pie-chart" extends="nvd3-abstract-chart">
+    <script>
+        Polymer({
+            publish: {
+                /**
+                 * Function that returns the x value of the chart.
+                 *
+                 * @attribute x
+                 * @type Object
+                 */
+                x: function(d) { return d.label; },
+
+                /**
+                 * Function that returns the y value of the chart.
+                 *
+                 * @attribute y
+                 * @type Object
+                 */
+                y: function(d) { return d.value; },
+
+                /**
+                 * The colors selected for the elements of the chart.
+                 *
+                 * @attribute color
+                 * @type Object
+                 */
+                color: nv.utils.defaultColor(),
+
+                /**
+                 * If is to show tooltips where the mouse is.
+                 *
+                 * @attribute tooltips
+                 * @type bool
+                 * @default true
+                 */
+                tooltips: true,
+
+                /**
+                 * The HTML content of the tooltips.
+                 * The default is null because then the tooltip will be the
+                 * NVD3's default.
+                 *
+                 * @attribute tooltipContent
+                 * @type string
+                 * @default null
+                 */
+                tooltipContent: null,
+
+                /**
+                 * If is to show the legend.
+                 *
+                 * @attribute showLegend
+                 * @type bool
+                 * @default true
+                 */
+                showLegend: true,
+
+                /**
+                 * If is to show the labels.
+                 *
+                 * @attribute showLabels
+                 * @type bool
+                 * @default true
+                 */
+                showLabels: true
+            },
+
+            nvModel: nv.models.pieChart,
+
+            /**
+             * See the documentation for this function in the
+             * nvd3-abstract-chart element.
+             *
+             * @method configureChart
+             */
+            configureChart: function() {
+                this.super();
+
+                this.chart
+                    .color(this.color)
+                    .x(this.x)
+                    .y(this.y)
+                    .tooltips(this.tooltips)
+                    .showLegend(this.showLegend)
+                    .showLabels(this.showLabels)
+
+                if(this.tooltipContent)
+                    this.chart.tooltipContent(this.tooltipContent);
+            }
+        });
+    </script>
+</polymer-element>
