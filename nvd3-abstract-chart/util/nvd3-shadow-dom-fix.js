@@ -14,20 +14,12 @@
     nv.tooltip.cleanup = function() {
         // Find the tooltips, mark them for removal by this class (so others cleanups won't find it)
         var tooltips = document.querySelectorAll('body /deep/ .nvtooltip');
-        var purging = [];
-        for(var i = 0; i < tooltips.length; ++i) {
-            purging.push(tooltips[i]);
-            tooltips[i].style.transitionDelay = '0 !important';
-            tooltips[i].style.opacity = 0;
-            tooltips[i].className = 'nvtooltip-pending-removal';
+        if (tooltips) {
+            nv.dom.write(function() {
+                for (var i = 0; i < tooltips.length; i++) {
+                    tooltips[i].className = 'nvtooltip-pending-removal';
+                }
+            });
         }
-
-        setTimeout(function() {
-            while (purging.length) {
-                var removeMe = purging.pop();
-                removeMe.parentNode.removeChild(removeMe);
-            }
-        }, 500);
     };
-
 })();

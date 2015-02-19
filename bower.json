@@ -21,7 +21,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.2",
-    "nvd3-community": "~1.7.0",
+    "nvd3": "novus/nvd3#development",
     "core-ajax": "Polymer/core-ajax#~0.5.2",
     "d3": "~3.5.3"
   },
