@@ -22,13 +22,9 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5.2",
     "nvd3": "novus/nvd3#development",
-    "core-ajax": "Polymer/core-ajax#~0.5.2",
-    "d3": "~3.5.3"
+    "core-ajax": "Polymer/core-ajax#~0.5.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.5"
-  },
-  "resolutions": {
-    "d3": "~3.5.3"
   }
 }
