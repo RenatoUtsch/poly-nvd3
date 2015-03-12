@@ -23,6 +23,11 @@ all the other elements from polynvd3.
 <polymer-element name="nvd3-abstract-chart">
     <template>
         <link rel="stylesheet" href="../../nvd3/build/nv.d3.css" type="text/css">
+        <style>
+            :host {
+                height: 100%;
+            }
+        </style>
 
         <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
 
@@ -148,7 +153,6 @@ all the other elements from polynvd3.
                     div.className += ' with-3d-shadow';
                 if(this.withTransitions)
                     div.className += ' with-transitions';
-                    
 
                 this.chart
                     .margin(this.margin)
