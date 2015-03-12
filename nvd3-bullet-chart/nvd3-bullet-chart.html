@@ -37,30 +37,7 @@ WARNING: this element is terribly broken. Do not use it.
                  * @attribute forceX
                  * @type array
                  */
-                forceX: [],
-
-                /**
-                 * Function used to build the tooltip content. The variables
-                 * passed to the function can depend on the chart (i.e. it
-                 * depends on what makes sense for the chart) so you might want
-                 * to console.log stuff when playing with this to see what's
-                 * available.
-                 * The default is null because then the tooltip will be the
-                 * NVD3's default.
-                 *
-                 * @attribute tooltipContent
-                 * @type function
-                 * @default null
-                 */
-                tooltipContent: null,
-
-                /**
-                 * Whether to display tooltips or not.
-                 *
-                 * @attribute tooltips
-                 * @type boolean
-                 */
-                tooltips: true
+                forceX: []
             },
 
             nvModel: nv.models.bulletChart,
@@ -76,11 +53,7 @@ WARNING: this element is terribly broken. Do not use it.
 
                 this.chart
                     .color(this.color)
-                    .forceX(this.forceX)
-                    .tooltips(this.tooltips);
-
-                if(this.tooltipContent)
-                    this.chart.tooltipContent(this.tooltipContent);
+                    .forceX(this.forceX);
             }
         });
     </script>

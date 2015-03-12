@@ -142,29 +142,6 @@ This element is a polymer wrapper for the NVD3 line chart.
                 showYAxis: true,
 
                 /**
-                 * Function used to build the tooltip content. The variables
-                 * passed to the function can depend on the chart (i.e. it
-                 * depends on what makes sense for the chart) so you might want
-                 * to console.log stuff when playing with this to see what's
-                 * available.
-                 * The default is null because then the tooltip will be the
-                 * NVD3's default.
-                 *
-                 * @attribute tooltipContent
-                 * @type function
-                 * @default null
-                 */
-                tooltipContent: null,
-
-                /**
-                 * Whether to display tooltips or not.
-                 *
-                 * @attribute tooltips
-                 * @type boolean
-                 */
-                tooltips: true,
-
-                /**
                  * Sets the chart to use a guideline and floating tooltip
                  * instead of requiring the user to hover over specific
                  * hotspots. Turning this on will set the 'interactive' and
@@ -278,13 +255,10 @@ This element is a polymer wrapper for the NVD3 line chart.
                     .showLegend(this.showLegend)
                     .showXAxis(this.showXAxis)
                     .showYAxis(this.showYAxis)
-                    .tooltips(this.tooltips)
                     .useInteractiveGuideline(this.useInteractiveGuideline);
 
                 if(this.defined)
                     this.chart.defined(this.defined);
-                if(this.tooltipContent)
-                    this.chart.tooltipContent(this.tooltipContent);
                 if(this.x)
                     this.chart.x(this.x);
                 if(this.y)

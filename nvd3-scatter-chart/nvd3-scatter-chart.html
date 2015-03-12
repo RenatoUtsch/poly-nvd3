@@ -60,25 +60,6 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                 showYAxis: true,
 
                 /**
-                 * If is to show tooltips where the mouse is.
-                 *
-                 * @attribute tooltips
-                 * @type bool
-                 * @default true
-                 */
-                tooltips: true,
-
-                /**
-                 * The HTML content of the tooltips.
-                 * The default is null because then the tooltip will be the
-                 * NVD3's default.
-                 *
-                 * @attribute tooltipContent
-                 * @type string or function
-                 */
-                tooltipContent: function(key) { return '<h2>' + key + '</h2>'; },
-
-                /**
                  * If is to show the legend.
                  *
                  * @attribute showLegend
@@ -200,13 +181,10 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                     .showYAxis(this.showYAxis)
                     .showDistX(this.showDistX)
                     .showDistY(this.showDistY)
-                    .tooltips(this.tooltips)
                     .useVoronoi(this.useVoronoi)
                     .clipVoronoi(this.clipVoronoi)
+                    .interactive(true)
                     .showLegend(this.showLegend);
-
-                if(this.tooltipContent)
-                    this.chart.tooltipContent(this.tooltipContent);
 
                 this.chart.xAxis
                     .axisLabel(this.xAxisAxisLabel)

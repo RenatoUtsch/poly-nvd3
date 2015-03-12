@@ -60,26 +60,6 @@ This element is a polymer wrapper for the NVD3 stacked area chart.
                 showYAxis: true,
 
                 /**
-                 * If is to show tooltips where the mouse is.
-                 *
-                 * @attribute tooltips
-                 * @type bool
-                 * @default true
-                 */
-                tooltips: true,
-
-                /**
-                 * The HTML content of the tooltips.
-                 * The default is null because then the tooltip will be the
-                 * NVD3's default.
-                 *
-                 * @attribute tooltipContent
-                 * @type string
-                 * @default null
-                 */
-                tooltipContent: null,
-
-                /**
                  * If is to show the legend.
                  *
                  * @attribute showLegend
@@ -168,12 +148,8 @@ This element is a polymer wrapper for the NVD3 stacked area chart.
                     .y(this.y)
                     .showXAxis(this.showXAxis)
                     .showYAxis(this.showYAxis)
-                    .tooltips(this.tooltips)
                     .showLegend(this.showLegend)
                     .useInteractiveGuideline(this.useInteractiveGuideline);
-
-                if(this.tooltipContent)
-                    this.chart.tooltipContent(this.tooltipContent);
 
                 this.chart.xAxis
                     .axisLabel(this.xAxisAxisLabel)

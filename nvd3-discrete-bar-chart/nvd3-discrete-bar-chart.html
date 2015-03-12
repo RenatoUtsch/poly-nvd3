@@ -60,26 +60,6 @@ This element is a polymer wrapper for the NVD3 discrete bar chart.
                 showYAxis: true,
 
                 /**
-                 * If is to show tooltips where the mouse is.
-                 *
-                 * @attribute tooltips
-                 * @type bool
-                 * @default true
-                 */
-                tooltips: true,
-
-                /**
-                 * The HTML content of the tooltips.
-                 * The default is null because then the tooltip will be the
-                 * NVD3's default.
-                 *
-                 * @attribute tooltipContent
-                 * @type string
-                 * @default null
-                 */
-                tooltipContent: null,
-
-                /**
                  * The label of the x axis.
                  *
                  * @attribute xAxisAxisLabel
@@ -149,11 +129,7 @@ This element is a polymer wrapper for the NVD3 discrete bar chart.
                     .x(this.x)
                     .y(this.y)
                     .showXAxis(this.showXAxis)
-                    .showYAxis(this.showYAxis)
-                    .tooltips(this.tooltips);
-
-                if(this.tooltipContent)
-                    this.chart.tooltipContent(this.tooltipContent);
+                    .showYAxis(this.showYAxis);
 
                 this.chart.xAxis
                     .axisLabel(this.xAxisAxisLabel)
