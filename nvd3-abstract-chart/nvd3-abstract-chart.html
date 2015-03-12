@@ -26,9 +26,8 @@ all the other elements from polynvd3.
 
         <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
 
-        <div style="width: {{width}}; height: {{height}}">
-            <svg id="svg" style="width: {{width}}; height: {{height}}" overflow="visible" width="{{width}}"
-                height="{{height}}" class="nvd3-svg"></svg>
+        <div style="height: 100%">
+            <svg id="svg" class="nvd3-svg"></svg>
         </div>
     </template>
     <script>
@@ -72,24 +71,6 @@ all the other elements from polynvd3.
                  * @default ''
                  */
                 params: '',
-
-                /**
-                 * The width of the chart, in px.
-                 *
-                 * @attribute width
-                 * @type number
-                 * @default 1000
-                 */
-                width: 1000,
-
-                /**
-                 * The height of the chart, in px.
-                 *
-                 * @attribute height
-                 * @type number
-                 * @default 500
-                 */
-                height: 500,
 
                 /**
                  * The margin of the chart, in px.
@@ -167,10 +148,9 @@ all the other elements from polynvd3.
                     div.className += ' with-3d-shadow';
                 if(this.withTransitions)
                     div.className += ' with-transitions';
+                    
 
                 this.chart
-                    .width(this.width)
-                    .height(this.height)
                     .margin(this.margin)
                     .noData(this.noData);
             },
