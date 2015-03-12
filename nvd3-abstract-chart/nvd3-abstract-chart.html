@@ -6,7 +6,7 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../core-ajax/core-ajax.html">
 <script src="../../d3/d3.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="../../../nvd3/build/nv.d3.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../nvd3/build/nv.d3.js" type="text/javascript" charset="utf-8"></script>
 
 <!--
 This element is the abstract element that all polymer-wrapped nvd3 charts
@@ -22,7 +22,7 @@ all the other elements from polynvd3.
 -->
 <polymer-element name="nvd3-abstract-chart">
     <template>
-        <link rel="stylesheet" href="../../../nvd3/build/nv.d3.css" type="text/css">
+        <link rel="stylesheet" href="../../nvd3/build/nv.d3.css" type="text/css">
 
         <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
 
