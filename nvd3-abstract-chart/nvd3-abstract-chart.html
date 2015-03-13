@@ -78,6 +78,28 @@ all the other elements from polynvd3.
                 params: '',
 
                 /**
+                 * The width of the chart, in px.
+                 * If this is not set, the chart will take the maximum amount
+                 * of space it can take from the parent div.
+                 *
+                 * @attribute width
+                 * @type number
+                 * @default null
+                 */
+                width: null,
+
+                /**
+                 * The height of the chart, in px.
+                 * If this is not set, the chart's height will then be
+                 * proportional to its width.
+                 *
+                 * @attribute height
+                 * @type number
+                 * @default null
+                 */
+                height: null,
+
+                /**
                  * The margin of the chart, in px.
                  * You specify the top, the bottom, the left and the right
                  * margins in an object, in the same way as CSS.
@@ -182,11 +204,42 @@ all the other elements from polynvd3.
 
                 nv.addGraph(function() {
                     self.chart = self.nvModel();
+                    //self.chart.tooltip.chartContainer(self.shadowRoot.querySelector('div'));
                     self.configureChart();
 
                     self.updateData();
+                    window.addEventListener('resize', function() {
+                        self.resizeChart();
+                    });
+
                     return self.chart;
                 });
+            },
+
+            /*
+             * This function resizes the chart.
+             */
+            resizeChart: function() {
+                var div = this.shadowRoot.querySelector('div');
+                var availableWidth = this.width ? this.width : div.offsetWidth;
+                var availableHeight = this.height
+                    ? this.height : availableWidth / 1.6180; // Golden ratio.
+
+                console.log(div.offsetWidth);
+                div.style.width = availableWidth + "px";
+                div.style.height = availableHeight + "px";
+                this.svg.style.width = availableWidth + "px";
+                this.svg.style.height = availableHeight + "px";
+
+                this.chart
+                    .width(availableWidth)
+                    .height(availableHeight);
+
+                this.svg
+                    .call(this.chart);
+                console.log("test");
+
+                nv.utils.windowResize(this.chart.update);
             },
 
             /*
@@ -198,7 +251,7 @@ all the other elements from polynvd3.
                     this.svg.datum(this.data)
                         .call(this.chart);
 
-                    nv.utils.windowResize(this.chart.update);
+                    this.resizeChart();
                 }
             },
 
@@ -228,7 +281,7 @@ all the other elements from polynvd3.
 
             urlChanged: function(oldValue, newValue) {
                 this.manageDataFromUrl();
-            }
+            },
         });
     </script>
 </polymer-element>
