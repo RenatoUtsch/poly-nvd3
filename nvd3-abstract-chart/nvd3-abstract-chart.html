@@ -23,15 +23,14 @@ all the other elements from polynvd3.
 <polymer-element name="nvd3-abstract-chart">
     <template>
         <link rel="stylesheet" href="../../nvd3/build/nv.d3.css" type="text/css">
-        <style>
+        <style type="text/css">
             :host {
-                height: 100%;
+                display: block
             }
         </style>
-
         <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
 
-        <div style="height: 100%">
+        <div>
             <svg id="svg" class="nvd3-svg"></svg>
         </div>
     </template>
@@ -201,15 +200,20 @@ all the other elements from polynvd3.
              */
             createChart: function() {
                 var self = this;
+                var lazy;
 
                 nv.addGraph(function() {
                     self.chart = self.nvModel();
-                    //self.chart.tooltip.chartContainer(self.shadowRoot.querySelector('div'));
+                    if(self.chart.tooltip)
+                        self.chart.tooltip.chartContainer(self.svg.node().parentNode);
                     self.configureChart();
 
                     self.updateData();
                     window.addEventListener('resize', function() {
-                        self.resizeChart();
+                        clearTimeout(lazy);
+                        lazy = setTimeout(function () {
+                            self.resizeChart();
+                        }, 300);
                     });
 
                     return self.chart;
@@ -220,16 +224,14 @@ all the other elements from polynvd3.
              * This function resizes the chart.
              */
             resizeChart: function() {
+                var host = this.shadowRoot.host;
                 var div = this.shadowRoot.querySelector('div');
-                var availableWidth = this.width ? this.width : div.offsetWidth;
+                var availableWidth = this.width ? this.width : host.offsetWidth;
                 var availableHeight = this.height
                     ? this.height : availableWidth / 1.6180; // Golden ratio.
 
-                console.log(div.offsetWidth);
                 div.style.width = availableWidth + "px";
                 div.style.height = availableHeight + "px";
-                this.svg.style.width = availableWidth + "px";
-                this.svg.style.height = availableHeight + "px";
 
                 this.chart
                     .width(availableWidth)
@@ -237,7 +239,6 @@ all the other elements from polynvd3.
 
                 this.svg
                     .call(this.chart);
-                console.log("test");
 
                 nv.utils.windowResize(this.chart.update);
             },
