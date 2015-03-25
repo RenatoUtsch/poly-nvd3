@@ -1,5 +1,5 @@
 {
-  "name": "polynvd3",
+  "name": "poly-nvd3",
   "version": "0.1.2",
   "authors": [
     "RenatoUtsch <renatoutsch@gmail.com>"
@@ -12,9 +12,9 @@
     "d3",
     "nvd3"
   ],
-  "main": "polynvd3.html",
+  "main": "poly-nvd3.html",
   "license": "BSD",
-  "homepage": "https://github.com/RenatoUtsch/polynvd3/",
+  "homepage": "https://github.com/RenatoUtsch/poly-nvd3/",
   "ignore": [
     "/.*",
     "/tests/"

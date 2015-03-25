@@ -33,7 +33,7 @@ module.exports = function(grunt) {
                 }
             },
             files: {
-                'polynvd3.html': 'polynvd3/polynvd3.html'
+                'poly-nvd3.html': 'poly-nvd3/poly-nvd3.html'
             },
         },
     },
@@ -49,11 +49,9 @@ module.exports = function(grunt) {
     },
     // Task configuration.
     uglify: {
-      options: {
-      },
       dist: {
-        src: 'polynvd3.js',
-        dest: 'polynvd3.js'
+        src: 'poly-nvd3.js',
+        dest: 'poly-nvd3.js'
       }
     },
   });
