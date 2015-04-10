@@ -5,7 +5,7 @@
   <title>nvd3-stacked-area-chart Demo</title>
 
   <script src="../../webcomponentsjs/webcomponents.min.js" type="text/javascript"></script>
-  <link rel="import" href="../polynvd3.html">
+  <link rel="import" href="../poly-nvd3.html">
 
 </head>
 <body unresolved>
@@ -21,7 +21,7 @@
   </polymer-element>
 
   <p>An example of using <code>&lt;nvd3-stacked-area-chart&gt;</code>:</p>
-  <div style="width: 1000px; height: 500px">
+  <div style="width: 1000px">
     <custom-stacked-area-chart url="demo.json"></custom-stacked-area-chart>
   </div>
 
@@ -37,6 +37,15 @@
   </polymer-element>
 
   <custom-data-stacked-area-chart></custom-data-stacked-area-chart>
+
+  <p>An example inside another element:</p>
+  <polymer-element name="wrapper-element" noscript>
+    <template>
+        <custom-stacked-area-chart url="demo.json"></custom-stacked-area-chart>
+    </template>
+  </polymer-element>
+  
+  <wrapper-element></wrapper-element>
 
 </body>
 </html>

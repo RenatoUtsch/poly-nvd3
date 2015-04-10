@@ -22,6 +22,8 @@ module.exports = function(grunt) {
                     imports: [
                         "polymer.html",
                         "polymer.js",
+                        "nvd3.html",
+                        "d3.html",
                         "core-ajax.html",
                         "nv.d3.js",
                         "nv.d3.css",
