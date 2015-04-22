@@ -6,14 +6,14 @@
 <link rel="import" href="../nvd3-abstract-chart/nvd3-abstract-chart.html">
 
 <!--
-This element is a polymer wrapper for the NVD3 scatter chart.
+This element is a polymer wrapper for the NVD3 candlestick chart.
 
-@element nvd3-scatter-chart
-@blurb Polymer wrapper for the NVD3 scatter chart.
+@element nvd3-candlestick-chart
+@blurb Polymer wrapper for the NVD3 candlestick chart.
 @status alpha
-@homepage http://renatoutsch.github.io/poly-nvd3/nvd3-scatter-chart
+@homepage http://renatoutsch.github.io/poly-nvd3/nvd3-candlestick-chart
 -->
-<polymer-element name="nvd3-scatter-chart" extends="nvd3-abstract-chart">
+<polymer-element name="nvd3-candlestick-chart" extends="nvd3-abstract-chart">
     <script>
         Polymer({
             publish: {
@@ -23,7 +23,7 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                  * @attribute x
                  * @type Object
                  */
-                x: function(d) { return d.x; },
+                x: function(d) { return d['date']; },
 
                 /**
                  * Function that returns the y value of the chart.
@@ -31,7 +31,7 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                  * @attribute y
                  * @type Object
                  */
-                y: function(d) { return d.y; },
+                y: function(d) { return d['close']; },
 
                 /**
                  * The colors selected for the elements of the chart.
@@ -40,6 +40,15 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                  * @type Object
                  */
                 color: nv.utils.defaultColor(),
+
+                /**
+                 * If the chart is interactive.
+                 *
+                 * @attribute interactive
+                 * @type bool
+                 * @default true
+                 */
+                interactive: true,
 
                 /**
                  * If is to show the x axis.
@@ -58,55 +67,6 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                  * @default true
                  */
                 showYAxis: true,
-
-                /**
-                 * If is to show the legend.
-                 *
-                 * @attribute showLegend
-                 * @type bool
-                 * @default true
-                 */
-                showLegend: true,
-
-                /**
-                 * showDistX.
-                 *
-                 * @attribute showDistX
-                 * @type bool
-                 * @default true
-                 */
-                showDistX: true,
-
-                /**
-                 * showDistY
-                 *
-                 * @attribute showDistY
-                 * @type bool
-                 * @default true
-                 */
-                showDistY: true,
-
-                /**
-                 * When useVoronoi is on, this masks each voronoi section with a
-                 * circle to limit selection to smaller area.
-                 *
-                 * @attribute clipVoronoi
-                 * @type bool
-                 * @default true
-                 */
-                clipVoronoi: true,
-
-                /**
-                 * Use voronoi diagram to select nearest point to display
-                 * tooltip instead of requiring a hover over the specific point
-                 * itself. Setting this to false will also set clipVoronoi to
-                 * false.
-                 *
-                 * @attribute useVoronoi
-                 * @type bool
-                 * @default true
-                 */
-                useVoronoi: true,
 
                 /**
                  * The label of the x axis.
@@ -132,7 +92,7 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                  * @attribute xAxisTickFormat
                  * @type Object
                  */
-                xAxisTickFormat: function(d) { return d3.format('.2f')(d); },
+                xAxisTickFormat: function(d) { return d; },
 
                 /**
                  * The label of the y axis.
@@ -162,7 +122,7 @@ This element is a polymer wrapper for the NVD3 scatter chart.
 
             },
 
-            nvModel: nv.models.scatterChart,
+            nvModel: nv.models.candlestickBarChart,
 
             /**
              * See the documentation for this function in the
@@ -177,14 +137,9 @@ This element is a polymer wrapper for the NVD3 scatter chart.
                     .color(this.color)
                     .x(this.x)
                     .y(this.y)
+                    .interactive(this.interactive)
                     .showXAxis(this.showXAxis)
-                    .showYAxis(this.showYAxis)
-                    .showDistX(this.showDistX)
-                    .showDistY(this.showDistY)
-                    .useVoronoi(this.useVoronoi)
-                    .clipVoronoi(this.clipVoronoi)
-                    .interactive(true)
-                    .showLegend(this.showLegend);
+                    .showYAxis(this.showYAxis);
 
                 this.chart.xAxis
                     .axisLabel(this.xAxisAxisLabel)
