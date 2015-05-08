@@ -24,7 +24,8 @@
     "nvd3": "novus/nvd3#development",
     "core-ajax": "Polymer/core-ajax#~0.5.2",
     "d3-import": "^1.0.0",
-    "d3": "^3.4.4"
+    "d3": "^3.4.4",
+    "Resizer": "alefwmm/Resizer#master"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.5"

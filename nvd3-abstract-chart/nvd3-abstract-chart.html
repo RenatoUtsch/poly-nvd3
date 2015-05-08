@@ -7,6 +7,7 @@
 <link rel="import" href="../../core-ajax/core-ajax.html">
 <link rel="import" href="../../d3-import/d3.html">
 <link rel="import" href="../nvd3.html">
+<link rel="import" href="../../Resizer/Resizer.html">
 
 <!--
 This element is the abstract element that all polymer-wrapped nvd3 charts
@@ -194,8 +195,6 @@ all the other elements from poly-nvd3.
             },
 
             created: function() {
-                // Private variables. Do not access them from outside this
-                // element!
                 this.chart = null;
                 this.svg = null;
                 this.data = this.data || [];
@@ -213,7 +212,6 @@ all the other elements from poly-nvd3.
              */
             createChart: function() {
                 var self = this;
-                var lazy;
 
                 nv.addGraph(function() {
                     self.chart = self.nvModel();
@@ -222,11 +220,8 @@ all the other elements from poly-nvd3.
                     self.configureChart();
 
                     self.updateData();
-                    window.addEventListener('resize', function() {
-                        clearTimeout(lazy);
-                        lazy = setTimeout(function () {
-                            self.resizeChart();
-                        }, 300);
+                    Resizer.add(self.shadowRoot.host, function() {
+                        self.resizeChart();
                     });
 
                     return self.chart;

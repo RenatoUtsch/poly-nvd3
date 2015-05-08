@@ -24,6 +24,7 @@ module.exports = function(grunt) {
                         "polymer.js",
                         "nvd3.html",
                         "d3.html",
+                        "Resizer.html",
                         "core-ajax.html",
                         "nv.d3.js",
                         "nv.d3.css",
