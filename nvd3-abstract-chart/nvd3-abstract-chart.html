@@ -30,7 +30,7 @@ all the other elements from poly-nvd3.
         </style>
         <core-ajax url="{{url}}" params="{{params}}" handleAs="json"></core-ajax>
 
-        <div>
+        <div id="container">
             <svg id="svg" class="nvd3-svg"></svg>
         </div>
     </template>
@@ -179,7 +179,7 @@ all the other elements from poly-nvd3.
              */
             configureChart: function() {
                 // Set up the div css classes first.
-                var div = this.shadowRoot.querySelector('div');
+                var div = this.$.container;
                 if(this.with3dShadow)
                     div.className += ' with-3d-shadow';
                 if(this.withTransitions)
@@ -258,7 +258,7 @@ all the other elements from poly-nvd3.
              */
             resizeChart: function() {
                 var host = this.shadowRoot.host;
-                var div = this.shadowRoot.querySelector('div');
+                var div = this.$.container;
                 var availableWidth = this.width ? this.width : host.offsetWidth;
                 var availableHeight = this.height
                     ? this.height : availableWidth / 1.6180; // Golden ratio.
