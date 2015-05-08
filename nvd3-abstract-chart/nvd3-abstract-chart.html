@@ -118,6 +118,16 @@ all the other elements from poly-nvd3.
                 noData: 'No Data Available.',
 
                 /**
+                 * Set the tooltip.contentGenerator json argument to specify
+                 * the format of the tooltip.
+                 *
+                 * @attribute tooltipContentGenerator
+                 * @type Object (JSON)
+                 * @defualt null
+                 */
+                tooltipContentGenerator: null,
+
+                /**
                  * Add a CSS class to make the tooltips rounded and shadowed.
                  *
                  * @attribute with3dShadow
@@ -178,6 +188,9 @@ all the other elements from poly-nvd3.
                 this.chart
                     .margin(this.margin)
                     .noData(this.noData);
+
+                if(this.tooltipContentGenerator)
+                    this.chart.tooltip.contentGenerator(this.tooltipContentGenerator);
             },
 
             created: function() {
@@ -221,6 +234,26 @@ all the other elements from poly-nvd3.
             },
 
             /*
+             * This function is called after each chart update, including after
+             * when it is first created, but before the chart is resized.
+             * Call this.super() before adding your things to this function,
+             * because the charts can modify this.
+             */
+            beforeResize: function() {
+
+            },
+
+            /*
+             * This function is called after each chart update, including after
+             * when it is first created, but after the chart is resized.
+             * Call this.super() before adding your things to this function,
+             * because the charts can modify this.
+             */
+            afterResize: function() {
+
+            },
+
+            /*
              * This function resizes the chart.
              */
             resizeChart: function() {
@@ -252,7 +285,9 @@ all the other elements from poly-nvd3.
                     this.svg.datum(this.data)
                         .call(this.chart);
 
+                    this.beforeResize();
                     this.resizeChart();
+                    this.afterResize();
                 }
             },
 
