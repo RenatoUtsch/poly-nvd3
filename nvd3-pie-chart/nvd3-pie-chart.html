@@ -42,6 +42,24 @@ This element is a polymer wrapper for the NVD3 pie chart.
                 color: nv.utils.defaultColor(),
 
                 /**
+                 * If the pie chart is actually a donut chart.
+                 *
+                 * @attribute donut
+                 * @type bool
+                 * @default false
+                 */
+                donut: false,
+
+                /**
+                 * Percent of pie to cut to form the radius. Between 0 and 1.
+                 *
+                 * @attribute donutRatio
+                 * @type Float
+                 * @default 0.5
+                 */
+                donutRatio: 0.5,
+
+                /**
                  * If is to show the legend.
                  *
                  * @attribute showLegend
@@ -75,6 +93,8 @@ This element is a polymer wrapper for the NVD3 pie chart.
                     .color(this.color)
                     .x(this.x)
                     .y(this.y)
+                    .donut(this.donut)
+                    .donutRatio(this.donutRatio)
                     .growOnHover(false) // TODO This will stay while the option is buggy.
                     .showLegend(this.showLegend)
                     .showLabels(this.showLabels);
