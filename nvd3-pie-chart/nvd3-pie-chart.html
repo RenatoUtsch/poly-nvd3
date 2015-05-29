@@ -60,6 +60,16 @@ This element is a polymer wrapper for the NVD3 pie chart.
                 donutRatio: 0.5,
 
                 /**
+                 * What kind of data to display on the slice labels. Options are
+                 * key, value or percent.
+                 *
+                 * @attribute labelType
+                 * @type String
+                 * @default "key"
+                 */
+                labelType: "key",
+
+                /**
                  * If is to show the legend.
                  *
                  * @attribute showLegend
@@ -95,6 +105,7 @@ This element is a polymer wrapper for the NVD3 pie chart.
                     .y(this.y)
                     .donut(this.donut)
                     .donutRatio(this.donutRatio)
+                    .labelType(this.labelType)
                     .growOnHover(false) // TODO This will stay while the option is buggy.
                     .showLegend(this.showLegend)
                     .showLabels(this.showLabels);
