@@ -70,6 +70,15 @@ This element is a polymer wrapper for the NVD3 pie chart.
                 labelType: "key",
 
                 /**
+                 * Format of the labels.
+                 *
+                 * @attribute labelFormat
+                 * @type Object
+                 * @default null
+                 */
+                labelFormat: null,
+
+                /**
                  * If is to show the legend.
                  *
                  * @attribute showLegend
@@ -109,6 +118,9 @@ This element is a polymer wrapper for the NVD3 pie chart.
                     .growOnHover(false) // TODO This will stay while the option is buggy.
                     .showLegend(this.showLegend)
                     .showLabels(this.showLabels);
+
+                if(this.labelFormat)
+                    this.chart.labelFormat(this.labelFormat);
             }
         });
     </script>
