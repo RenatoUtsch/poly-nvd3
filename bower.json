@@ -1,6 +1,6 @@
 {
   "name": "poly-nvd3",
-  "version": "0.1.2",
+  "version": "1.0.0-alpha1",
   "authors": [
     "RenatoUtsch <renatoutsch@gmail.com>"
   ],
@@ -15,19 +15,12 @@
   "main": "poly-nvd3.html",
   "license": "BSD",
   "homepage": "https://github.com/RenatoUtsch/poly-nvd3/",
-  "ignore": [
-    "/.*",
-    "/tests/"
-  ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.2",
-    "nvd3": "novus/nvd3#development",
-    "core-ajax": "Polymer/core-ajax#~0.5.2",
+    "polymer": "Polymer/polymer#^1.0.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.0.0",
+    "nvd3": "novus/nvd3#^1.8.1",
     "d3-import": "^1.0.0",
     "d3": "^3.4.4",
     "Resizer": "alefwmm/Resizer#^0.0.1"
-  },
-  "devDependencies": {
-    "web-component-tester": "Polymer/web-component-tester#^2.0.5"
   }
 }

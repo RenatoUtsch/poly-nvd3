@@ -1,6 +1,6 @@
 {
-  "name": "polynvd3",
-  "version": "0.0.0",
+  "name": "poly-nvd3",
+  "version": "1.0.0-alpha1",
   "engines": {
     "node": ">= 0.10.0"
   },
