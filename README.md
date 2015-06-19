@@ -1,7 +1,7 @@
 Poly-NVD3
 =========
-This project enables using [NVD3](www.github.com/novus/nvd3) as web components
-through Polymer.
+This project enables using [NVD3](https://github.com/novus/nvd3) as web
+components through Polymer.
 
 Installation
 ============
@@ -16,6 +16,9 @@ $ bower install --save poly-nvd3
 
 This command will also save the poly-nvd3 dependency on your project on your
 bower.json file.
+
+Please note that Bower will also install poly-nvd3’s dependencies, like d3,
+Polymer and nvd3.
 
 Usage
 =====
@@ -36,7 +39,8 @@ javascript) and specify the NVD3Behavior and the NVD3 model:
 </script>
 ```
 
-After that, just import your chart and profit!
+Note that importing the nvd3-behavior file also imports d3 and nvd3. After that,
+just import your chart and profit!
 
 ```html
 <!doctype html>
@@ -54,8 +58,7 @@ After that, just import your chart and profit!
 </html>
 ```
 
-Specifying data
----------------
+## Specifying data
 To specify the data to be used on your charts you have two ways: you can use
 the *data* or the *url* attributes.
 
@@ -119,8 +122,7 @@ them. This means that if you change any of these attributes after the page has
 been created the chart will automatically be updated with the new data from the
 *data* attribute or from the request to the given *url*.
 
-Chart size
-----------
+## Chart size
 You can specify *width*, *height* and *fit* attributes for the chart to control its
 width and height.
 
@@ -160,8 +162,15 @@ This chart will have a constant width of 1600 pixels and a height of
 ```
 This chart will take the maximum space available for both its width and height.
 
-Customizing
------------
+The *width*, *height* and *fit* attributes also have watchers on them. If you change
+them, the chart will update accordingly. To disable the *width* and *height*
+attributes, remove them or set them to 0.
+
+If the width or height are not specified, the chart is responsive. This means
+that if the parent element of the chart changes its width or height, the chart
+will update itself accordingly.
+
+## Customizing
 To customize the NVD3 chart to your needs, you can implement the `customize`
 function when creating your chart element:
 
@@ -184,6 +193,6 @@ function when creating your chart element:
 ```
 
 The `customize` function will be called after creating the chart model and
-before calling `nv.utils.windowResize`, inside the nv.addGraph() function.
+before calling `nv.utils.windowResize`, inside the `nv.addGraph` function.
 Poly-NVD3 takes care of setting up the responsive chart with the data
-you want and lets you configure the chart the way you want.
+you specified and lets you configure the chart the way you want.
