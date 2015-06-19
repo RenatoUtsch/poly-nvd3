@@ -1,0 +1,183 @@
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../d3-import/d3.html">
+<link rel="import" href="nvd3.html">
+<link rel="import" href="../Resizer/Resizer.html">
+
+<script>
+    Nvd3Behavior = {
+        properties: {
+            /**
+             * Object that contains the data that will be displayed on the
+             * chart.
+             * Ignored when the `url` attribute is used.
+             */
+            data: {
+                type: Object,
+                value: function() { return []; },
+                observer: '_update'
+            },
+
+            /**
+             * The `url` attribute specifies an url to get the JSON data that
+             * is used in the nvd3 chart.`
+             * You can use the `params` attribute to specify the parameters in
+             * the GET request, much in the same way as the `iron-ajax` element.
+             *
+             * When this attribute is present, the `data` attribute is ignored.
+             */
+            url: {
+                type: String,
+                value: '',
+                observer: '_request'
+            },
+
+            /**
+             * The `params` attribute specifies the parameters to the url
+             * specified in the `url` attribute, in JSON. This attribute works
+             * in the same way as the iron-ajax's one.
+             *
+             * This attribute is ignored unless the `url` attribute is set.
+             */
+            params: {
+                type: String,
+                value: '',
+                observer: '_request'
+            },
+
+            /**
+             * If specified, the width of the chart will be this value. If not,
+             * it will be the width of the parent element. If there isn't a
+             * parent, it will be set to 1000px.
+             */
+            width: {
+                type: Number,
+                value: 0,
+                observer: '_resize'
+            },
+
+            /**
+             * If specified, the height of the chart will be this value. If not,
+             * see the 'fit' property for the behaviour of the height.
+             */
+            height: {
+                type: Number,
+                value: 0,
+                observer: '_resize'
+            },
+
+            /**
+             * This properties changes the behaviour of the height of the chart.
+             * If this property is not defined, the height is set to the width
+             * divided by the golden ratio. If this property is defined, the
+             * height is set to the height of the parent element of the chart.
+             *
+             * Of course, this only matters if the "height" property isn't
+             * defined. If it is, the height of the chart will be the one set
+             * in that property.
+             */
+            fit: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true,
+                observer: '_resize'
+            }
+        },
+        created: function() {
+            this._chart = null;
+            this._svg = d3.select(this.root).append('svg');
+            this._ajax = document.createElement('iron-ajax');
+            this._ajax.handleAs = 'json';
+
+            // To add the offsetWidth property to this.root.
+            this.style.display = "block";
+
+        },
+        ready: function() {
+            this._create();
+        },
+
+        /**
+         * Default addGraph() function. Replace with your own,
+         * setting the configuration.
+         */
+        addGraph: function(chart) {
+
+        },
+
+        /**
+         * Creates the nvd3 model for the chart.
+         */
+        _create: function() {
+            nv.addGraph(function() {
+                this._chart = this.nvModel();
+                this.addGraph(this._chart, this._svg);
+                this._update();
+
+                Resizer.add(this.root, function() {
+                    this._update();
+                });
+
+                return this._chart;
+            }.bind(this));
+        },
+
+        /**
+         * Updates the data of the chart. Called if it changed.
+         */
+        _update: function() {
+            if(!this._chart || !this.data) return;
+
+            this._svg.datum(this.data)
+                .call(this._chart);
+            this._resize();
+        },
+
+        /**
+         * Resizes the chart. Called if the parent element's size changed.
+         */
+        _resize: function() {
+            if(!this._chart) return;
+
+            /*
+             * The width is selected as follows:
+             * - First, use the 'width' property if it is set.
+             * - Second, use the 'offsetWidth' property of the root if it is set.
+             * - Third, fallback to 1000 pixels.
+             *
+             * The height has two behaviors: if the fit attribute was defined,
+             * the `offsetHeight` property of the root is used if this.height
+             * is 0. If not, the fallback is to the width divided by the golden
+             * ratio.
+             */
+            var w = this.width ? this.width : (this.root.offsetWidth ?
+                    this.root.offsetWidth : 1000);
+            var h = this.height ? this.height : (this.fit ?
+                    this.root.offsetHeight : w / 1.6180);
+
+            this._chart
+                .width(w)
+                .height(h);
+            this._svg
+                .style("width", w)
+                .style("height", h)
+                .call(this._chart);
+
+            nv.utils.windowResize(this._chart.update);
+        },
+
+        /*
+         * Gets data from the request url.
+         */
+        _request: function() {
+            if(this.url) {
+                // Get the data from the url and set it as the current data.
+                this._ajax.url = this.url;
+                this._ajax.params = this.params;
+                this._ajax.addEventListener('response', function(e) {
+                    this.data = e.detail.response;
+                }.bind(this));
+                this._ajax.generateRequest();
+            }
+        }
+    }
+</script>

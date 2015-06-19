@@ -1,0 +1,13 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "line-chart",
+        nvModel: nv.models.lineChart,
+        behaviors: [Nvd3Behavior],
+        addGraph: function(chart, svg) {
+            chart.useInteractiveGuideline(true);
+        }
+    });
+</script>
