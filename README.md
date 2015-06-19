@@ -1,9 +1,189 @@
-polynvd3
-========
-to use all the nvd3 charts implemented in the subfolders of this project, just
-import the ‘poly-nvd3.html’ file, and you’ll be able to use all charts.
-When debugging or developing this project, you can import the nvd3 components
-directly. This saves time because you’ll not have to recompile the project
-every time you make a change.
+Poly-NVD3
+=========
+This project enables using [NVD3](www.github.com/novus/nvd3) as web components
+through Polymer.
 
-See the [component page](http://renatoutsch.github.io/poly-nvd3) for more information.
+Installation
+============
+You can install Poly-NVD3 with bower or download it from this repository
+directly.
+
+To install with bower, just run the following command on your project (the $
+symbolizes the user shell):
+```bash
+$ bower install --save poly-nvd3
+```
+
+This command will also save the poly-nvd3 dependency on your project on your
+bower.json file.
+
+Usage
+=====
+To implement NVD3 charts using polymer, create a typical element (only on
+javascript) and specify the NVD3Behavior and the NVD3 model:
+
+**my-line-chart.html**
+```html
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href=”bower_components/poly-nvd3/nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "my-line-chart",
+        nvModel: nv.models.lineChart,
+        behaviors: [NVD3Behavior]
+    });
+</script>
+```
+
+After that, just import your chart and profit!
+
+```html
+<!doctype html>
+<html>
+<head>
+    <meta charset=”utf-8”>
+    <title>Poly-NVD3</title>
+
+    <script src=”bower_components/webcomponentsjs/webcomponents-lite.min.js” type=”text/javascript”></script>
+    <link rel=”import” href=”my-line-chart.html”>
+</head>
+<body>
+    <my-line-chart url=”my-data.json”></my-line-chart>
+</body>
+</html>
+```
+
+Specifying data
+---------------
+To specify the data to be used on your charts you have two ways: you can use
+the *data* or the *url* attributes.
+
+The *url* attribute is used when you want to get your data from a request. You
+can specify the request URL in the *url* attribute and the request parameters in
+the *params* attribute, in the same way as when you create an
+[iron-ajax](https://elements.polymer-project.org/elements/iron-ajax) element:
+
+```html
+<my-line-chart url=”http://example.com/api/line-chart-data” params=’{“alt”: “json”}’></my-line-chart>
+```
+
+If instead you already have the data you want to display, you can create the
+chart element specifying the data directly:
+
+**my-data-element.html**
+```html
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href=”bower_components/poly-nvd3/nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "my-line-chart",
+        nvModel: nv.models.lineChart,
+        data: [
+            {
+                “key”: “Line 1”,
+                “values”: [
+                    {“x”: 0, “y”: 1},
+                    {“x”: 1, “y”: 2},
+                    {“x”: 2, “y”: 3}
+                ]
+            }
+        ],
+        behaviors: [NVD3Behavior]
+    });
+</script>
+
+```
+
+Then, when creating your chart, you don’t have to specify anything else:
+
+```html
+<!doctype html>
+<html>
+<head>
+    <meta charset=”utf-8”>
+    <title>Poly-NVD3</title>
+
+    <script src=”bower_components/webcomponentsjs/webcomponents-lite.min.js” type=”text/javascript”></script>
+    <link rel=”import” href=”my-data-element.html”>
+</head>
+<body>
+    <my-line-chart></my-line-chart>
+</body>
+</html>
+```
+
+Also, please note that the *data*, *url* and *params* attributes have watchers on
+them. This means that if you change any of these attributes after the page has
+been created the chart will automatically be updated with the new data from the
+*data* attribute or from the request to the given *url*.
+
+Chart size
+----------
+You can specify *width*, *height* and *fit* attributes for the chart to control its
+width and height.
+
+By default, if you don’t specify any of these parameters, the chart will
+automatically take all the width of its parent element and set the height to
+be the width divided by the golden ratio, what will give a pleasant appearance
+to the chart’s size. If the parent element doesn’t have a width, the chart will
+use a default of 1000 pixels.
+
+If you specify the fit attribute, the chart will take the maximum space
+available for both its width and height instead of using the golden ratio for
+the height.
+
+You can override the width and height to a constant value by specifying the
+*width* and *height* attributes. Some examples:
+
+```html
+<my-line-chart width=”1500” height=”600”></my-line-chart>
+```
+This chart will be created with constant width and height of 1500 and 600
+pixels, respectively.
+
+```html
+<my-line-chart width=”1200” fit></my-line-chart>
+```
+This chart will be created with a constant width of 1200 pixels and the height
+will be all the available space from its parent div.
+
+```html
+<my-line-chart width=”1600”></my-line-chart>
+```
+This chart will have a constant width of 1600 pixels and a height of
+`width / (golden ratio)`.
+
+```html
+<my-line-chart fit></my-line-chart>
+```
+This chart will take the maximum space available for both its width and height.
+
+Customizing
+-----------
+To customize the NVD3 chart to your needs, you can implement the `customize`
+function when creating your chart element:
+
+```html
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href=”bower_components/poly-nvd3/nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "my-line-chart",
+        nvModel: nv.models.lineChart,
+        behaviors: [NVD3Behavior],
+        customize: function(chart, svg) {
+            /* Customize your chart and svg here. */
+            chart.useInteractiveGuideline(true);
+            chart.xAxis.axisLabel(“Time (seconds)”);
+        }
+    });
+</script>
+```
+
+The `customize` function will be called after creating the chart model and
+before calling `nv.utils.windowResize`, inside the nv.addGraph() function.
+Poly-NVD3 takes care of setting up the responsive chart with the data
+you want and lets you configure the chart the way you want.

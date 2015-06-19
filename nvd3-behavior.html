@@ -4,7 +4,7 @@
 <link rel="import" href="../Resizer/Resizer.html">
 
 <script>
-    Nvd3Behavior = {
+    NVD3Behavior = {
         properties: {
             /**
              * Object that contains the data that will be displayed on the
@@ -97,10 +97,10 @@
         },
 
         /**
-         * Default addGraph() function. Replace with your own,
+         * Default customize() function. Replace with your own,
          * setting the configuration.
          */
-        addGraph: function(chart) {
+        customize: function(chart) {
 
         },
 
@@ -110,7 +110,7 @@
         _create: function() {
             nv.addGraph(function() {
                 this._chart = this.nvModel();
-                this.addGraph(this._chart, this._svg);
+                this.customize(this._chart, this._svg);
                 this._update();
 
                 Resizer.add(this.root, function() {

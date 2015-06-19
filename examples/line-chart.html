@@ -5,8 +5,8 @@
     Polymer({
         is: "line-chart",
         nvModel: nv.models.lineChart,
-        behaviors: [Nvd3Behavior],
-        addGraph: function(chart, svg) {
+        behaviors: [NVD3Behavior],
+        customize: function(chart, svg) {
             chart.useInteractiveGuideline(true);
         }
     });
