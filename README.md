@@ -81,18 +81,25 @@ chart element specifying the data directly:
 
 <script>
     Polymer({
+        properties: {
+            data: {
+                type: Object,
+                value: function() {
+                    return [
+                        {
+                            “key”: “Line 1”,
+                            “values”: [
+                                {“x”: 0, “y”: 1},
+                                {“x”: 1, “y”: 2},
+                                {“x”: 2, “y”: 3}
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
         is: "my-line-chart",
         nvModel: nv.models.lineChart,
-        data: [
-            {
-                “key”: “Line 1”,
-                “values”: [
-                    {“x”: 0, “y”: 1},
-                    {“x”: 1, “y”: 2},
-                    {“x”: 2, “y”: 3}
-                ]
-            }
-        ],
         behaviors: [NVD3Behavior]
     });
 </script>
