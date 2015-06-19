@@ -196,3 +196,30 @@ The `customize` function will be called after creating the chart model and
 before calling `nv.utils.windowResize`, inside the `nv.addGraph` function.
 Poly-NVD3 takes care of setting up the responsive chart with the data
 you specified and lets you configure the chart the way you want.
+
+You can also change configurations before and after the chart is resized, by
+implementing the `beforeResize` and `afterResize` functions, respectively. For
+example:
+
+```html
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href=”bower_components/poly-nvd3/nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "my-line-chart",
+        nvModel: nv.models.lineChart,
+        behaviors: [NVD3Behavior],
+        customize: function(chart, svg) {
+            chart.useInteractiveGuideline(true);
+            chart.xAxis.axisLabel(“Time (seconds)”);
+        },
+        afterResize: function(chart, svg) {
+            // Highlight Y Zero.
+            svg
+                .select(".nv-y .nv-axis .zero line")
+                .style("stroke", "#555");
+        }
+    });
+</script>
+```

@@ -100,7 +100,23 @@
          * Default customize() function. Replace with your own,
          * setting the configuration.
          */
-        customize: function(chart) {
+        customize: function(chart, svg) {
+
+        },
+
+        /**
+         * Function called before the chart resize. Replace with your own if
+         * you want.
+         */
+        beforeResize: function(chart, svg) {
+
+        },
+
+        /**
+         * Function called after the chart resize. Replace with your own if
+         * you want.
+         */
+        afterResize: function(chart, svg) {
 
         },
 
@@ -137,6 +153,7 @@
          */
         _resize: function() {
             if(!this._chart) return;
+            this.beforeResize(this._chart, this._svg);
 
             /*
              * The width is selected as follows:
@@ -163,6 +180,7 @@
                 .call(this._chart);
 
             nv.utils.windowResize(this._chart.update);
+            this.afterResize(this._chart, this._svg);
         },
 
         /*
