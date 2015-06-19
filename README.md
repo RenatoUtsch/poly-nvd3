@@ -58,7 +58,7 @@ just import your chart and profit!
 </html>
 ```
 
-## Specifying data
+### Specifying data
 To specify the data to be used on your charts you have two ways: you can use
 the *data* or the *url* attributes.
 
@@ -122,7 +122,7 @@ them. This means that if you change any of these attributes after the page has
 been created the chart will automatically be updated with the new data from the
 *data* attribute or from the request to the given *url*.
 
-## Chart size
+### Chart size
 You can specify *width*, *height* and *fit* attributes for the chart to control its
 width and height.
 
@@ -170,7 +170,7 @@ If the width or height are not specified, the chart is responsive. This means
 that if the parent element of the chart changes its width or height, the chart
 will update itself accordingly.
 
-## Customizing
+### Customizing
 To customize the NVD3 chart to your needs, you can implement the `customize`
 function when creating your chart element:
 
