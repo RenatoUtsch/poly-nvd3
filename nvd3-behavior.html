@@ -84,7 +84,7 @@
         },
         created: function() {
             this._chart = null;
-            this._svg = d3.select(this.root).append('svg');
+            this._svg = d3.select(this.root).append('div').append('svg');
             this._ajax = document.createElement('iron-ajax');
             this._ajax.handleAs = 'json';
 
