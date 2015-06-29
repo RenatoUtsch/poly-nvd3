@@ -131,7 +131,7 @@
 
                 Resizer.add(this.root, function() {
                     this._update();
-                });
+                }.bind(this));
 
                 return this._chart;
             }.bind(this));
@@ -174,9 +174,10 @@
             this._chart
                 .width(w)
                 .height(h);
+
+            this._svg.node().style.width = w + 'px';
+            this._svg.node().style.height = h + 'px';
             this._svg
-                .style("width", w)
-                .style("height", h)
                 .call(this._chart);
 
             nv.utils.windowResize(this._chart.update);
