@@ -141,7 +141,7 @@
          * Updates the data of the chart. Called if it changed.
          */
         _update: function() {
-            if(!this._chart || !this.data) return;
+            if(!this._chart || !this.data.length) return;
 
             this._svg.datum(this.data)
                 .call(this._chart);
