@@ -1,0 +1,12 @@
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "line-chart-spark",
+        nvModel: nv.models.sparkline,
+        behaviors: [NVD3Behavior],
+        customize: function(chart, svg) {
+        }
+    });
+</script>
