@@ -199,10 +199,12 @@ function when creating your chart element:
 </script>
 ```
 
-The `customize` function will be called after creating the chart model and
-before calling `nv.utils.windowResize`, inside the `nv.addGraph` function.
-Poly-NVD3 takes care of setting up the responsive chart with the data
-you specified and lets you configure the chart the way you want.
+The `customize` function will be called inside the `nv.addGraph` function, after
+creating the chart model and before setting up the chart resize method
+(Poly-NVD3 uses [Resizer](https://github.com/alefwmm/Resizer), which is better
+than nv.utils.windowResize). Poly-NVD3 takes care of setting up the responsive
+chart with the data you specified and lets you configure the chart the way you
+want.
 
 You can also change configurations before and after the chart is resized, by
 implementing the `beforeResize` and `afterResize` functions, respectively. For
