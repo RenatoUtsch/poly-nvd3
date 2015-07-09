@@ -128,10 +128,9 @@
                 this._chart = this.nvModel();
                 this.customize(this._chart, this._svg);
                 this._update();
+                this._resize();
 
-                Resizer.add(this.root, function() {
-                    this._update();
-                }.bind(this));
+                Resizer.add(this.root, this._resize);
 
                 return this._chart;
             }.bind(this));
@@ -145,43 +144,50 @@
 
             this._svg.datum(this.data)
                 .call(this._chart);
-            this._resize();
         },
 
         /**
          * Resizes the chart. Called if the parent element's size changed.
+         *
+         * The width is selected as follows:
+         * - First, use the 'width' property if it is set.
+         * - Second, use the 'offsetWidth' property of the root if it is set.
+         * - Third, fallback to 1000 pixels.
+         *
+         * The height has two behaviors: if the fit attribute was defined,
+         * the `offsetHeight` property of the root is used if this.height
+         * is 0. If not, the fallback is to the width divided by the golden
+         * ratio.
          */
         _resize: function() {
-            if(!this._chart) return;
-            this.beforeResize(this._chart, this._svg);
+            // Only called if there is none currently being called.
+            function resize() {
+                this.beforeResize(this._chart, this._svg);
 
-            /*
-             * The width is selected as follows:
-             * - First, use the 'width' property if it is set.
-             * - Second, use the 'offsetWidth' property of the root if it is set.
-             * - Third, fallback to 1000 pixels.
-             *
-             * The height has two behaviors: if the fit attribute was defined,
-             * the `offsetHeight` property of the root is used if this.height
-             * is 0. If not, the fallback is to the width divided by the golden
-             * ratio.
-             */
-            var w = this.width ? this.width : (this.root.offsetWidth ?
-                    this.root.offsetWidth : 1000);
-            var h = this.height ? this.height : (this.fit ?
-                    this.root.offsetHeight : w / 1.6180);
+                var w = this.width ? this.width : (this.root.offsetWidth ?
+                        this.root.offsetWidth : 1000);
+                var h = this.height ? this.height : (this.fit ?
+                        this.root.offsetHeight : w / 1.6180);
 
-            this._chart
-                .width(w)
-                .height(h);
+                this._chart
+                    .width(w)
+                    .height(h);
 
-            this._svg.node().style.width = w + 'px';
-            this._svg.node().style.height = h + 'px';
-            this._svg
-                .call(this._chart);
+                this._svg.node().style.width = w + 'px';
+                this._svg.node().style.height = h + 'px';
+                this._svg
+                    .call(this._chart);
 
-            nv.utils.windowResize(this._chart.update);
-            this.afterResize(this._chart, this._svg);
+                nv.utils.windowResize(this._chart.update);
+
+                this.afterResize(this._chart, this._svg);
+            }
+
+            if(!this._chart)
+                return;
+
+            // Do not do this task if one is already scheduled.
+            this.debounce("chart-resize", resize, 200);
         },
 
         /*
