@@ -178,7 +178,9 @@
                 this._svg
                     .call(this._chart);
 
-                nv.utils.windowResize(this._chart.update);
+                // nv.utils.windowResize is not needed, as we are treating the
+                // component resize with Resizer, which is more intelligent.
+                this._chart.update();
 
                 this.afterResize(this._chart, this._svg);
             }
