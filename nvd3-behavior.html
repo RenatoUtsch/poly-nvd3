@@ -97,10 +97,17 @@
         },
 
         /**
-         * Default customize() function. Replace with your own,
+         * Default onCreate() function. Replace with your own,
          * setting the configuration.
          */
-        customize: function(chart, svg) {
+        onCreate: function(chart, svg) {
+
+        },
+
+        /**
+         * Default afterCreate() function. Replace with your own if you want.
+         */
+        afterCreate: function(chart, svg) {
 
         },
 
@@ -133,7 +140,7 @@
         _create: function() {
             nv.addGraph(function() {
                 this._chart = this.nvModel();
-                this.customize(this._chart, this._svg);
+                this.onCreate(this._chart, this._svg);
                 this._update();
 
                 Resizer.add(this.root, function() {
@@ -141,6 +148,8 @@
                 }.bind(this));
 
                 return this._chart;
+            }.bind(this), function() {
+                this.afterCreate(this._chart, this._svg);
             }.bind(this));
         },
 

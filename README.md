@@ -20,6 +20,11 @@ bower.json file.
 Please note that Bower will also install poly-nvd3’s dependencies, like d3,
 Polymer and nvd3.
 
+Migration
+=========
+The following breaking change happened between the 1.2.x and 1.3.x versions:
+- The `customize` function was renamed to `onCreate`.
+
 Usage
 =====
 To implement NVD3 charts using polymer, create a typical element (only on
@@ -178,7 +183,7 @@ that if the parent element of the chart changes its width or height, the chart
 will update itself accordingly.
 
 ### Customizing
-To customize the NVD3 chart to your needs, you can implement the `customize`
+To customize the NVD3 chart to your needs, you can implement the `onCreate`
 function when creating your chart element:
 
 ```html
@@ -190,7 +195,7 @@ function when creating your chart element:
         is: "my-line-chart",
         nvModel: nv.models.lineChart,
         behaviors: [NVD3Behavior],
-        customize: function(chart, svg) {
+        onCreate: function(chart, svg) {
             /* Customize your chart and svg here. */
             chart.useInteractiveGuideline(true);
             chart.xAxis.axisLabel(“Time (seconds)”);
@@ -199,12 +204,34 @@ function when creating your chart element:
 </script>
 ```
 
-The `customize` function will be called inside the `nv.addGraph` function, after
+The `onCreate` function will be called inside the `nv.addGraph` function, after
 creating the chart model and before setting up the chart resize method
 (Poly-NVD3 uses [Resizer](https://github.com/alefwmm/Resizer), which is better
 than nv.utils.windowResize). Poly-NVD3 takes care of setting up the responsive
 chart with the data you specified and lets you configure the chart the way you
 want.
+
+If you want to set configurations after the chart is created, you can implement
+the `afterCreate` function:
+
+```html
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href=”bower_components/poly-nvd3/nvd3-behavior.html">
+
+<script>
+    Polymer({
+        is: "my-line-chart",
+        nvModel: nv.models.lineChart,
+        behaviors: [NVD3Behavior],
+        afterCreate: function(chart, svg) {
+            /* Customize what you want after creating the chart. */
+            chart.interactiveLayer.dispatch.on('elementMousemove', function(d) {
+                alert(“Moving through the elements on the chart.”);
+            });
+        }
+    });
+</script>
+```
 
 You can also change configurations before and after the chart is resized, by
 implementing the `beforeResize` and `afterResize` functions, respectively. For
@@ -219,7 +246,7 @@ example:
         is: "my-line-chart",
         nvModel: nv.models.lineChart,
         behaviors: [NVD3Behavior],
-        customize: function(chart, svg) {
+        onCreate: function(chart, svg) {
             chart.useInteractiveGuideline(true);
             chart.xAxis.axisLabel(“Time (seconds)”);
         },
