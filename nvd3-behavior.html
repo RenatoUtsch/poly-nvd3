@@ -1,29 +1,42 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../d3-import/d3.html">
+
 <link rel="import" href="nvd3.html">
-<link rel="import" href="../Resizer/Resizer.html">
 
 <script>
-    NVD3Behavior = {
+    /**
+     * `nvd3-behavior` wraps nvd3 library into a reactive and responsive component
+     * for Polymer.
+     *
+     * More info on the repository.
+     * @polymerBehavior nvd3-behavior
+     */
+
+    var NVD3BehaviorImpl = {
         properties: {
             /**
              * Object that contains the data that will be displayed on the
              * chart.
              * Ignored when the `url` attribute is used.
+             *
+             * @attribute: data
              */
             data: {
-                type: Object,
-                value: function() { return []; },
+                type: Array,
+                value: [],
                 observer: '_update'
             },
 
             /**
              * The `url` attribute specifies an url to get the JSON data that
-             * is used in the nvd3 chart.`
+             * is used in the nvd3 chart.
              * You can use the `params` attribute to specify the parameters in
              * the GET request, much in the same way as the `iron-ajax` element.
              *
              * When this attribute is present, the `data` attribute is ignored.
+             *
+             * @attribute: url
              */
             url: {
                 type: String,
@@ -37,6 +50,8 @@
              * in the same way as the iron-ajax's one.
              *
              * This attribute is ignored unless the `url` attribute is set.
+             *
+             * @attribute: params
              */
             params: {
                 type: String,
@@ -48,6 +63,8 @@
              * If specified, the width of the chart will be this value. If not,
              * it will be the width of the parent element. If there isn't a
              * parent, it will be set to 1000px.
+             *
+             * @attribute: width
              */
             width: {
                 type: Number,
@@ -58,6 +75,8 @@
             /**
              * If specified, the height of the chart will be this value. If not,
              * see the 'fit' property for the behaviour of the height.
+             *
+             * @attribute: height
              */
             height: {
                 type: Number,
@@ -74,17 +93,65 @@
              * Of course, this only matters if the "height" property isn't
              * defined. If it is, the height of the chart will be the one set
              * in that property.
+             *
+             * @attribute: fit
              */
             fit: {
                 type: Boolean,
                 value: false,
                 reflectToAttribute: true,
                 observer: '_resize'
+            },
+
+            /**
+             * NVD3 chart instance.
+             *
+             * @attribute: _chart
+             */
+            _chart: {
+                type: Object,
+                value: null
+            },
+
+            /**
+             * SVG container used to resize the chart.
+             *
+             * @attribute: _container
+             */
+            _container: {
+                type: Object,
+                value: null
+            },
+
+            /**
+             * D3 SVG selection.
+             *
+             * @attribute: _svg
+             */
+            _svg: {
+                type: Object,
+                value: null
+            },
+
+            /**
+             * Ajax element to retrieve data from local files.
+             *
+             * @attribute: _ajax
+             */
+            _ajax: {
+                type: Object,
+                value: null
             }
+
         },
+
+        listeners: {
+            "iron-resize": "_resize"
+        },
+
         created: function() {
-            this._chart = null;
-            this._svg = d3.select(this.root).append('div').append('svg');
+            this._container = Polymer.dom(this.root).appendChild(document.createElement("div"));
+            this._svg = d3.select(this._container).append("svg");
             this._ajax = document.createElement('iron-ajax');
             this._ajax.handleAs = 'json';
 
@@ -92,6 +159,7 @@
             this.style.display = "block";
 
         },
+
         ready: function() {
             this._create();
         },
@@ -108,13 +176,6 @@
          * Default afterCreate() function. Replace with your own if you want.
          */
         afterCreate: function(chart, svg) {
-
-        },
-
-        /**
-         * Format the data before it is sent to the chart.
-         */
-        formatData: function(data) {
 
         },
 
@@ -142,10 +203,7 @@
                 this._chart = this.nvModel();
                 this.onCreate(this._chart, this._svg);
                 this._update();
-
-                Resizer.add(this.root, function() {
-                    this._update();
-                }.bind(this));
+                this._resize();
 
                 return this._chart;
             }.bind(this), function() {
@@ -157,48 +215,52 @@
          * Updates the data of the chart. Called if it changed.
          */
         _update: function() {
-            if(!this._chart || !this.data.length) return;
+            if(!this._chart || !this.data || !this.data.length) return;
 
-            this.formatData(this.data);
             this._svg.datum(this.data)
                 .call(this._chart);
-            this._resize();
         },
 
         /**
          * Resizes the chart. Called if the parent element's size changed.
          */
-        _resize: function() {
-            if(!this._chart) return;
-            this.beforeResize(this._chart, this._svg);
+         _resize: function() {
+            if (!this._chart) return;
 
-            /*
-             * The width is selected as follows:
-             * - First, use the 'width' property if it is set.
-             * - Second, use the 'offsetWidth' property of the root if it is set.
-             * - Third, fallback to 1000 pixels.
-             *
-             * The height has two behaviors: if the fit attribute was defined,
-             * the `offsetHeight` property of the root is used if this.height
-             * is 0. If not, the fallback is to the width divided by the golden
-             * ratio.
-             */
-            var w = this.width ? this.width : (this.root.offsetWidth ?
-                    this.root.offsetWidth : 1000);
-            var h = this.height ? this.height : (this.fit ?
-                    this.root.offsetHeight : w / 1.6180);
+             this.debounce("resize-chart", function () {
+                var w, h;
 
-            this._chart
-                .width(w)
-                .height(h);
+                this.beforeResize(this._chart, this._svg);
 
-            this._svg.node().style.width = w + 'px';
-            this._svg.node().style.height = h + 'px';
-            this._svg
-                .call(this._chart);
+                /*
+                 * The width is selected as follows:
+                 * - First, use the 'width' property if it is set.
+                 * - Second, use the 'offsetWidth' property of the root if it is set.
+                 * - Third, fallback to 1000 pixels.
+                 *
+                 * The height has two behaviors: if the fit attribute was defined,
+                 * the `offsetHeight` property of the root is used if this.height
+                 * is 0. If not, the fallback is to the width divided by the golden
+                 * ratio.
+                 */
+                w = this.width ? this.width : (this.root.offsetWidth ?
+                        this.root.offsetWidth : 1000);
+                h = this.height ? this.height : (this.fit ?
+                        this.root.offsetHeight : w / 1.6180);
 
-            nv.utils.windowResize(this._chart.update);
-            this.afterResize(this._chart, this._svg);
+                this._chart
+                    .width(w)
+                    .height(h);
+
+                this._container.style.width = w + "px";
+                this._container.style.height = h + "px";
+
+                this._svg
+                    .call(this._chart);
+
+                this.afterResize(this._chart, this._svg);
+
+            }, 100);
         },
 
         /*
@@ -215,5 +277,8 @@
                 this._ajax.generateRequest();
             }
         }
-    }
+    };
+
+    var NVD3Behavior = [Polymer.IronResizableBehavior, NVD3BehaviorImpl];
+
 </script>
