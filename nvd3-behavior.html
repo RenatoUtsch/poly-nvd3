@@ -173,6 +173,14 @@
         },
 
         /**
+         * This function is called to format the data. Be careful and
+         * ensure you do not change *data* reference, generating a circular loop.
+         */
+        formatData: function (data) {
+
+        },
+
+        /**
          * Default afterCreate() function. Replace with your own if you want.
          */
         afterCreate: function(chart, svg) {
@@ -217,6 +225,7 @@
         _update: function() {
             if(!this._chart || !this.data || !this.data.length) return;
 
+            this.formatData(this.data);
             this._svg.datum(this.data)
                 .call(this._chart);
         },
