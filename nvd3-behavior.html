@@ -212,6 +212,13 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
         },
 
         /**
+         * Funciton called after data has loaded, even if the data was empty.
+         */
+        onDataLoaded: function(data) {
+
+        },
+
+        /**
          * Creates the nvd3 model for the chart.
          */
         _create: function() {
@@ -231,6 +238,8 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
          * Updates the data of the chart. Called if it changed.
          */
         _update: function() {
+            this.onDataLoaded(this.data);
+
             if(!this._chart || !this.data || !this.data.length) return;
 
             this.formatData(this.data);
