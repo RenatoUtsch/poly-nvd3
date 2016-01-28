@@ -32,7 +32,7 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
              */
             data: {
                 type: Array,
-                value: [],
+                value: null,
                 observer: '_update'
             },
 
@@ -240,7 +240,7 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
         _update: function() {
             this.onDataLoaded(this.data);
 
-            if(!this._chart || !this.data || !this.data.length) return;
+            if(!this._chart || !this.data) return;
 
             this.formatData(this.data);
             this._svg.datum(this.data)
