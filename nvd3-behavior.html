@@ -276,10 +276,10 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
                  * is 0. If not, the fallback is to the width divided by the golden
                  * ratio.
                  */
-                w = this.width ? this.width : (this.root.offsetWidth ?
-                        this.root.offsetWidth : 1000);
+                  w = this.width ? this.width : (this.getBoundingClientRect().width ?
+                        this.getBoundingClientRect().width : 1000);
                 h = this.height ? this.height : (this.fit ?
-                        this.root.offsetHeight : w / 1.6180);
+                        this.getBoundingClientRect().height : w / 1.6180);
 
                 this._chart
                     .width(w)
