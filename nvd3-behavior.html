@@ -281,8 +281,10 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
                 this._container.style.width = w + "px";
                 this._container.style.height = h + "px";
 
-                this._svg
-                    .call(this._chart);
+                if (this.data) {
+                    this._svg
+                        .call(this._chart);
+                }
 
                 this.afterResize(this._chart, this._svg);
 
