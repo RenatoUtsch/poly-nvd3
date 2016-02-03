@@ -303,6 +303,9 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
          */
         _request: function() {
             if(this.url) {
+                for (var i = 0; i < this._ajax.activeRequests.length; i++) {
+                    this._ajax.activeRequests[i].abort();
+                }
                 // Get the data from the url and set it as the current data.
                 this._ajax.url = this.url;
                 this._ajax.params = this.params;
