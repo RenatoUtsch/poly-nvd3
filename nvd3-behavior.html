@@ -219,6 +219,13 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
         },
 
         /**
+         * Funciton called if data fails to load
+         */
+        onError: function(error) {
+
+        },
+
+        /**
          * Creates the nvd3 model for the chart.
          */
         _create: function() {
@@ -301,6 +308,9 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
                 this._ajax.params = this.params;
                 this._ajax.addEventListener('response', function(e) {
                     this.data = e.detail.response;
+                }.bind(this));
+                this._ajax.addEventListener('error', function(e) {
+                    this.onError(e);
                 }.bind(this));
                 this._ajax.generateRequest();
             }
