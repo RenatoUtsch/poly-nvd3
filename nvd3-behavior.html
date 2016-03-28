@@ -268,18 +268,20 @@ https://github.com/RenatoUtsch/poly-nvd3/raw/master/LICENSE.txt
                 /*
                  * The width is selected as follows:
                  * - First, use the 'width' property if it is set.
-                 * - Second, use the 'offsetWidth' property of the root if it is set.
+                 * - Second, use the width of the bounding client rect of the
+                 *   element if it is set.
                  * - Third, fallback to 1000 pixels.
                  *
                  * The height has two behaviors: if the fit attribute was defined,
-                 * the `offsetHeight` property of the root is used if this.height
-                 * is 0. If not, the fallback is to the width divided by the golden
-                 * ratio.
+                 * the height of the bounding client rect of the element is used
+                 * if this.height is 0. If not, the fallback is to the width
+                 * divided by the golden ratio.
                  */
-                  w = this.width ? this.width : (this.getBoundingClientRect().width ?
-                        this.getBoundingClientRect().width : 1000);
+                var boundingRect = this.getBoundingClientRect();
+                w = this.width ? this.width : (boundingRect.width ?
+                        boundingRect.width : 1000);
                 h = this.height ? this.height : (this.fit ?
-                        this.getBoundingClientRect().height : w / 1.6180);
+                        boundingRect.height : w / 1.6180);
 
                 this._chart
                     .width(w)
