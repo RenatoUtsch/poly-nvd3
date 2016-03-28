@@ -206,8 +206,8 @@ function when creating your chart element:
 
 The `onCreate` function will be called inside the `nv.addGraph` function, after
 creating the chart model and before setting up the chart resize method
-(Poly-NVD3 uses [Resizer](https://github.com/alefwmm/Resizer), which is better
-than nv.utils.windowResize). Poly-NVD3 takes care of setting up the responsive
+(Poly-NVD3 uses `iron-resizable-behavior`, which is better than
+`nv.utils.windowResize`). Poly-NVD3 takes care of setting up the responsive
 chart with the data you specified and lets you configure the chart the way you
 want.
 

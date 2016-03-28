@@ -1,6 +1,8 @@
 {
   "name": "poly-nvd3",
   "version": "1.4.1",
+  "license": "BSD-3-Clause",
+  "repository": "RenatoUtsch/poly-nvd3",
   "engines": {
     "node": ">= 0.10.0"
   }
